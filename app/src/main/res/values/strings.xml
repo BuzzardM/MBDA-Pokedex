@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Pokedex</string>
+    <string name="home_fragment">Home Fragment</string>
+    <string name="favorites_fragment">Favorites Fragment</string>
+    <string name="home">Home</string>
+    <string name="favorites">Favorites</string>
 </resources>
