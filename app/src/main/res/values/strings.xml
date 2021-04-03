@@ -4,4 +4,6 @@
     <string name="favorites_fragment">Favorites Fragment</string>
     <string name="home">Home</string>
     <string name="favorites">Favorites</string>
+    <string name="pokemon_name_placeholder">Pokemon Name Placeholder</string>
+    <string name="pokemon_sprite">Pokemon Sprite</string>
 </resources>
