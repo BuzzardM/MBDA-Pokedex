@@ -1,15 +1,14 @@
-package com.deadlinehunters.pokedex
+package com.deadlinehunters.pokedex.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.deadlinehunters.pokedex.R
 import com.deadlinehunters.pokedex.model.PokemonResult
-import kotlin.math.log
 
 class PokemonResultAdapter(private val dataSet: List<PokemonResult>, private val context: Context) : RecyclerView.Adapter<PokemonResultAdapter.ViewHolder>() {
 

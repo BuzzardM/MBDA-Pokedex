@@ -1,9 +1,6 @@
-package com.deadlinehunters.pokedex
+package com.deadlinehunters.pokedex.framents
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +11,8 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.deadlinehunters.pokedex.adapters.PokemonResultAdapter
+import com.deadlinehunters.pokedex.R
 import com.deadlinehunters.pokedex.model.PokemonResult
 
 

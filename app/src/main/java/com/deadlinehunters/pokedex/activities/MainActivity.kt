@@ -1,9 +1,10 @@
-package com.deadlinehunters.pokedex
+package com.deadlinehunters.pokedex.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.deadlinehunters.pokedex.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -12,6 +13,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
 
-        findViewById<BottomNavigationView>(R.id.bottomNavigationView).setupWithNavController(findNavController(R.id.nav_host))
+        findViewById<BottomNavigationView>(R.id.bottomNavigationView).setupWithNavController(findNavController(
+            R.id.nav_host
+        ))
     }
 }
