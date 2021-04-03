@@ -1,6 +1,7 @@
 package com.deadlinehunters.pokedex
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +9,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.deadlinehunters.pokedex.model.PokemonResult
+import kotlin.math.log
 
-class PokemonResultAdapter(private val dataSet: Array<PokemonResult>, val context: Context) :
-    RecyclerView.Adapter<PokemonResultAdapter.ViewHolder>() {
+class PokemonResultAdapter(private val dataSet: List<PokemonResult>, private val context: Context) : RecyclerView.Adapter<PokemonResultAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val pokemonResultTextView: TextView = view.findViewById(R.id.pokemon_result_item_textview)
@@ -20,7 +21,7 @@ class PokemonResultAdapter(private val dataSet: Array<PokemonResult>, val contex
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // Create a new view, which defines the UI of the list item
-        val view = LayoutInflater.from(viewGroup.context)
+        val view = LayoutInflater.from(context)
             .inflate(R.layout.pokemon_result_item, viewGroup, false)
 
         return ViewHolder(view)
@@ -32,7 +33,7 @@ class PokemonResultAdapter(private val dataSet: Array<PokemonResult>, val contex
         // contents of the view with that element
         val currentPokemonResult = dataSet[position]
 
-        val pokemonId = String.format("%03d", (position+1).toString())
+        val pokemonId = String.format("%03d", (position+1))
         val uri = "@drawable/sprite_$pokemonId"
         val imageResource = context.resources.getIdentifier(
             uri,
@@ -45,5 +46,7 @@ class PokemonResultAdapter(private val dataSet: Array<PokemonResult>, val contex
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = dataSet.size
+    override fun getItemCount(): Int {
+        return dataSet.size
+    }
 }

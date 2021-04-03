@@ -1,33 +1,24 @@
 package com.deadlinehunters.pokedex
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import com.deadlinehunters.pokedex.model.PokemonResult
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private val pokemonResults = mutableListOf<PokemonResult>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,23 +28,52 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        val requestQueue = Volley.newRequestQueue(activity?.applicationContext)
+        getPokemonResults(requestQueue)
+
+    }
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        fun newInstance(): HomeFragment {
+            return HomeFragment()
+        }
+    }
+
+    private fun getPokemonResults(requestQueue: RequestQueue) {
+        val url = "https://pokeapi.co/api/v2/pokemon?limit=151"
+        val pokemonResults = mutableListOf<PokemonResult>()
+
+        val request = JsonObjectRequest(Request.Method.GET, url, null,
+            { response ->
+                val results = response.getJSONArray("results")
+                for (i in 0 until results.length()) {
+                    val result = results.getJSONObject(i)
+                    pokemonResults.add(
+                        PokemonResult(
+                            result.getString("name"),
+                            result.getString("url")
+                        )
+                    )
                 }
+
+                val adapter = activity?.applicationContext?.let {
+                    PokemonResultAdapter(pokemonResults,
+                        it
+                    )
+                }
+                val recyclerView = view?.findViewById<RecyclerView>(R.id.pokemon_overview_recyclerview)
+
+                if (recyclerView != null) {
+                    recyclerView.adapter = adapter
+                    recyclerView.layoutManager = LinearLayoutManager(activity?.applicationContext)
+                }
+            },
+            { error ->
+                error.printStackTrace()
             }
+        )
+        requestQueue.add(request)
     }
 }
