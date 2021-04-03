@@ -3,16 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory android:title="Pokémon name">
-
         <ListPreference
+            android:defaultValue="@string/font_preference_default_value"
             android:dialogTitle="@string/font_preference_dialog_title"
             android:entries="@array/entries"
             android:entryValues="@array/entry_values"
             android:key="pokemon_font_preference"
             android:title="@string/font_preference_title"
-            android:defaultValue="@string/font_preference_default_value"
             app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
 
+    <PreferenceCategory android:title="User">
+        <EditTextPreference
+            android:defaultValue="@string/username_preference_default_value"
+            android:key="username_preference"
+            android:summary="@string/username_preference_summary"
+            android:title="@string/username_preference_username" />
     </PreferenceCategory>
 
 </PreferenceScreen>

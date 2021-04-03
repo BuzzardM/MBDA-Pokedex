@@ -10,4 +10,7 @@
     <string name="font_preference_dialog_title">Change pokémon name font</string>
     <string name="font_preference_title">Choose font</string>
     <string name="font_preference_default_value">normal</string>
+    <string name="username_preference_summary">Enter your username used for greetings</string>
+    <string name="username_preference_username">Username</string>
+    <string name="username_preference_default_value">User</string>
 </resources>

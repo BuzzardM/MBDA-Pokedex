@@ -24,14 +24,12 @@ class PokemonResultAdapter(private val dataSet: List<PokemonResult>, private val
 
         init {
             val preferences = PreferenceManager.getDefaultSharedPreferences(view.context)
-            val fontPreference = preferences.getString("pokemon_font_preference", "normal")
-            var font: Int
 
-            when (fontPreference) {
-                "normal" -> font = R.font.pokemon_font
-                "unown" -> font = R.font.pokemon_unown_font
+            val font: Int = when (preferences.getString("pokemon_font_preference", "normal")) {
+                "normal" -> R.font.pokemon_font
+                "unown" -> R.font.pokemon_unown_font
                 else -> {
-                    font = R.font.pokemon_font
+                    R.font.pokemon_font
                 }
             }
 

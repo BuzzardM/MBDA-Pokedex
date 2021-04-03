@@ -14,6 +14,7 @@ import com.android.volley.toolbox.Volley
 import com.deadlinehunters.pokedex.adapters.PokemonResultAdapter
 import com.deadlinehunters.pokedex.R
 import com.deadlinehunters.pokedex.model.PokemonResult
+import com.google.android.material.snackbar.Snackbar
 
 
 class HomeFragment : Fragment() {
@@ -31,7 +32,6 @@ class HomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         val requestQueue = Volley.newRequestQueue(activity?.applicationContext)
         getPokemonResults(requestQueue)
-
     }
 
     companion object {
@@ -58,11 +58,13 @@ class HomeFragment : Fragment() {
                 }
 
                 val adapter = activity?.applicationContext?.let {
-                    PokemonResultAdapter(pokemonResults,
+                    PokemonResultAdapter(
+                        pokemonResults,
                         it
                     )
                 }
-                val recyclerView = view?.findViewById<RecyclerView>(R.id.pokemon_overview_recyclerview)
+                val recyclerView =
+                    view?.findViewById<RecyclerView>(R.id.pokemon_overview_recyclerview)
 
                 if (recyclerView != null) {
                     recyclerView.adapter = adapter
