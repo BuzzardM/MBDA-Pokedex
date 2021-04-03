@@ -46,25 +46,25 @@ class DetailActivity : AppCompatActivity() {
                 val stats = mutableListOf<PokemonStat>()
                 val types = mutableListOf<PokemonType>()
 
-                for (i in 0 until jsonStats.length()) {
-                    val result = jsonStats.getJSONObject(i)
-                    stats.add(
+                (0 until jsonStats.length())
+                    .asSequence()
+                    .map { jsonStats.getJSONObject(it) }
+                    .mapTo(stats) {
                         PokemonStat(
-                            result.getInt("base_stat"),
-                            result.getJSONObject("stat").getString("name")
+                            it.getInt("base_stat"),
+                            it.getJSONObject("stat").getString("name")
                         )
-                    )
-                }
+                    }
 
-                for (i in 0 until jsonTypes.length()) {
-                    val result = jsonTypes.getJSONObject(i)
-                    types.add(
+                (0 until jsonTypes.length())
+                    .asSequence()
+                    .map { jsonTypes.getJSONObject(it) }
+                    .mapTo(types) {
                         PokemonType(
-                            result.getInt("slot"),
-                            result.getJSONObject("type").getString("name")
+                            it.getInt("slot"),
+                            it.getJSONObject("type").getString("name")
                         )
-                    )
-                }
+                    }
 
                 pokemon.add(Pokemon(id, name, height, weight, stats, types))
             },
