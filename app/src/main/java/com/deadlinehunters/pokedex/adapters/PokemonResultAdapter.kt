@@ -10,11 +10,30 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deadlinehunters.pokedex.R
 import com.deadlinehunters.pokedex.model.PokemonResult
 
-class PokemonResultAdapter(private val dataSet: List<PokemonResult>, private val context: Context) : RecyclerView.Adapter<PokemonResultAdapter.ViewHolder>() {
+class PokemonResultAdapter(
+    private val dataSet: List<PokemonResult>,
+    private val context: Context,
+    private val listener: OnItemClickListener
+    ) : RecyclerView.Adapter<PokemonResultAdapter.ViewHolder>() {
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         val pokemonResultTextView: TextView = view.findViewById(R.id.pokemon_result_item_textview)
         val pokemonResultImageView: ImageView = view.findViewById(R.id.pokemon_result_item_imageview)
+
+        init{
+           view.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position: Int = adapterPosition
+
+            if(position != RecyclerView.NO_POSITION)
+                listener.onItemClick(dataSet[position])
+        }
+    }
+
+    interface OnItemClickListener{
+        fun onItemClick(pokemonResult: PokemonResult)
     }
 
     // Create new views (invoked by the layout manager)
@@ -48,4 +67,6 @@ class PokemonResultAdapter(private val dataSet: List<PokemonResult>, private val
     override fun getItemCount(): Int {
         return dataSet.size
     }
+
+
 }

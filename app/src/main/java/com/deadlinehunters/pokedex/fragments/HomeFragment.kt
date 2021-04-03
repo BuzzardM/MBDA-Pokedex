@@ -1,9 +1,11 @@
 package com.deadlinehunters.pokedex.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,10 +15,12 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.deadlinehunters.pokedex.adapters.PokemonResultAdapter
 import com.deadlinehunters.pokedex.R
+import com.deadlinehunters.pokedex.activities.DetailActivity
+import com.deadlinehunters.pokedex.activities.MainActivity
 import com.deadlinehunters.pokedex.model.PokemonResult
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), PokemonResultAdapter.OnItemClickListener {
     private val pokemonResults = mutableListOf<PokemonResult>()
 
     override fun onCreateView(
@@ -57,11 +61,7 @@ class HomeFragment : Fragment() {
                     )
                 }
 
-                val adapter = activity?.applicationContext?.let {
-                    PokemonResultAdapter(pokemonResults,
-                        it
-                    )
-                }
+                val adapter = activity?.applicationContext?.let { PokemonResultAdapter(pokemonResults, it, this)}
                 val recyclerView = view?.findViewById<RecyclerView>(R.id.pokemon_overview_recyclerview)
 
                 if (recyclerView != null) {
@@ -74,5 +74,12 @@ class HomeFragment : Fragment() {
             }
         )
         requestQueue.add(request)
+    }
+
+    override fun onItemClick(pokemonResult: PokemonResult) {
+        val i = Intent(requireContext(), DetailActivity::class.java)
+        i.putExtra("pokemon_data", pokemonResult)
+
+        startActivity(i)
     }
 }
