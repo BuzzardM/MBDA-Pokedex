@@ -6,6 +6,8 @@
     <string name="favorites">Favorites</string>
     <string name="pokemon_name_placeholder">Pokemon Name Placeholder</string>
     <string name="pokemon_sprite">Pokemon Sprite</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="preference_category_language">language</string>
+    <string name="language_preference_title">Change language</string>
+    <string name="language_preference_dialog_title">Choose language</string>
+    <string name="settings">Settings</string>
 </resources>

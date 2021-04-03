@@ -12,7 +12,12 @@
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="com.deadlinehunters.pokedex.favoritesFragment"
+        android:name="com.deadlinehunters.pokedex.fragments.FavoritesFragment"
         android:label="fragment_favorites"
         tools:layout="@layout/fragment_favorites" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.deadlinehunters.pokedex.fragments.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

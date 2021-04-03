@@ -31,7 +31,6 @@
             android:id="@+id/pokemon_result_item_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/pokemon_font"
             android:text="@string/pokemon_name_placeholder"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
