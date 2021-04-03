@@ -6,4 +6,6 @@
     <string name="favorites">Favorites</string>
     <string name="pokemon_name_placeholder">Pokemon Name Placeholder</string>
     <string name="pokemon_sprite">Pokemon Sprite</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

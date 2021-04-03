@@ -1,4 +1,4 @@
-package com.deadlinehunters.pokedex.framents
+package com.deadlinehunters.pokedex.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
