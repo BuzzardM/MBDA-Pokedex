@@ -7,7 +7,8 @@
     android:layout_marginStart="8dp"
     android:layout_marginTop="2dp"
     android:layout_marginEnd="8dp"
-    android:layout_marginBottom="2dp">
+    android:layout_marginBottom="2dp"
+    app:cardBackgroundColor="@color/palette_card_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pokemon_name_placeholder"
-            android:textColor="@android:color/black"
+            android:textColor="@color/palette_yellow"
             android:textSize="18sp" />
 
     </LinearLayout>

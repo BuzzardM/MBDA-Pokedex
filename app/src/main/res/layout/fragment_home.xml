@@ -8,9 +8,25 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pokemon_overview_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#DAD2CB"/>
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/palette_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@color/palette_background"
+        android:src="@drawable/pokedex_no_background"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/pokedex_no_background"
+        android:contentDescription="@string/pokedex_logo_content_description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
