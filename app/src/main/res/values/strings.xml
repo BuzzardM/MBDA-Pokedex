@@ -6,8 +6,8 @@
     <string name="favorites">Favorites</string>
     <string name="pokemon_name_placeholder">Pokemon Name Placeholder</string>
     <string name="pokemon_sprite">Pokemon Sprite</string>
-    <string name="preference_category_language">language</string>
-    <string name="language_preference_title">Change language</string>
-    <string name="language_preference_dialog_title">Choose language</string>
     <string name="settings">Settings</string>
+    <string name="font_preference_dialog_title">Change pokémon name font</string>
+    <string name="font_preference_title">Choose font</string>
+    <string name="font_preference_default_value">normal</string>
 </resources>

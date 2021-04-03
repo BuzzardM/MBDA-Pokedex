@@ -1,11 +1,16 @@
 package com.deadlinehunters.pokedex.adapters
 
 import android.content.Context
+import android.graphics.Typeface
+import android.graphics.fonts.Font
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deadlinehunters.pokedex.R
 import com.deadlinehunters.pokedex.model.PokemonResult
@@ -15,6 +20,23 @@ class PokemonResultAdapter(private val dataSet: List<PokemonResult>, private val
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val pokemonResultTextView: TextView = view.findViewById(R.id.pokemon_result_item_textview)
         val pokemonResultImageView: ImageView = view.findViewById(R.id.pokemon_result_item_imageview)
+
+
+        init {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(view.context)
+            val fontPreference = preferences.getString("pokemon_font_preference", "normal")
+            var font: Int
+
+            when (fontPreference) {
+                "normal" -> font = R.font.pokemon_font
+                "unown" -> font = R.font.pokemon_unown_font
+                else -> {
+                    font = R.font.pokemon_font
+                }
+            }
+
+            pokemonResultTextView.typeface = ResourcesCompat.getFont(view.context, font)
+        }
     }
 
     // Create new views (invoked by the layout manager)
@@ -22,7 +44,7 @@ class PokemonResultAdapter(private val dataSet: List<PokemonResult>, private val
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(context)
             .inflate(R.layout.pokemon_result_item, viewGroup, false)
-
+        
         return ViewHolder(view)
     }
 
