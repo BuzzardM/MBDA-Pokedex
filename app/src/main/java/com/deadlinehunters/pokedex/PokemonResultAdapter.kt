@@ -1,5 +1,6 @@
 package com.deadlinehunters.pokedex
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.deadlinehunters.pokedex.model.PokemonResult
 
-class PokemonResultAdapter(private val dataSet: Array<PokemonResult>) :
+class PokemonResultAdapter(private val dataSet: Array<PokemonResult>, val context: Context) :
     RecyclerView.Adapter<PokemonResultAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -31,7 +32,16 @@ class PokemonResultAdapter(private val dataSet: Array<PokemonResult>) :
         // contents of the view with that element
         val currentPokemonResult = dataSet[position]
 
+        val pokemonId = String.format("%03d", (position+1).toString())
+        val uri = "@drawable/sprite_$pokemonId"
+        val imageResource = context.resources.getIdentifier(
+            uri,
+            null,
+            context.packageName
+        )
+
         viewHolder.pokemonResultTextView.text = currentPokemonResult.name
+        viewHolder.pokemonResultImageView.setImageResource(imageResource)
     }
 
     // Return the size of your dataset (invoked by the layout manager)
