@@ -6,14 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".activities.DetailActivity">
 
+        <ImageView
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:contentDescription="@string/pokemon_background_content_description"
+            android:scaleType="fitXY"
+            android:src="@drawable/pokemon_default_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/placeholder"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            android:paddingTop="50dp"
+            android:contentDescription="@string/pokemon_image_content_description"
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:src="@drawable/pokemon_001"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

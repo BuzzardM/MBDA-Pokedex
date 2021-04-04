@@ -20,6 +20,7 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+        supportActionBar?.hide()
     }
 
     override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
@@ -67,6 +68,8 @@ class DetailActivity : AppCompatActivity() {
                 }
 
                 pokemon.add(Pokemon(id, name, height, weight, stats, types))
+
+
             },
             { error ->
                 error.printStackTrace()

@@ -17,4 +17,6 @@
     <string name="placeholder">Pokemon Details Placeholder</string>
     <string name="favorites_logo_description">Favorites</string>
     <string name="pokemon_number_placeholder">No. 000</string>
+    <string name="pokemon_background_content_description">pokemon background</string>
+    <string name="pokemon_image_content_description">Pokemon Image</string>
 </resources>
