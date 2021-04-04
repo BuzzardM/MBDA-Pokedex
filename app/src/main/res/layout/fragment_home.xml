@@ -10,23 +10,22 @@
         android:id="@+id/pokemon_overview_recyclerview"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/palette_background"
+        android:background="@drawable/pokeball_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/overview_imageView" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/overview_imageView"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:background="@color/palette_background"
-        android:src="@drawable/pokedex_no_background"
+        android:background="@color/pokemon_red_background"
+        android:contentDescription="@string/pokedex_logo_content_description"
         android:padding="16dp"
+        android:src="@drawable/pokedex_no_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/pokedex_no_background"
-        android:contentDescription="@string/pokedex_logo_content_description" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,7 +22,6 @@ import com.google.android.material.snackbar.Snackbar
 
 
 class HomeFragment : Fragment(), PokemonResultAdapter.OnItemClickListener {
-    private val pokemonResults = mutableListOf<PokemonResult>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

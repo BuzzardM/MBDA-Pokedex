@@ -15,4 +15,6 @@
     <color name="palette_blue_gray">#2F4858</color>
     <color name="palette_background">#B7A99A</color>
     <color name="palette_card_background">#4B8178</color>
+    <color name="pokemon_red_background">#BE312A</color>
+    <color name="palette_gray">#666666</color>
 </resources>

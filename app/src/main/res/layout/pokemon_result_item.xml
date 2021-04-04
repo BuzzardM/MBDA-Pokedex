@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,14 +8,18 @@
     android:layout_marginTop="2dp"
     android:layout_marginEnd="8dp"
     android:layout_marginBottom="2dp"
-    app:cardBackgroundColor="@color/palette_card_background">
+    android:theme="@style/Theme.Pokedex"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="5dp"
+    app:strokeColor="@color/black"
+    app:strokeWidth="2dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
         android:orientation="horizontal"
-        tools:ignore="UseCompoundDrawables">
+        tools:ignore="UseCompoundDrawables"
+        android:gravity="center_vertical">
 
         <ImageView
             android:id="@+id/pokemon_result_item_imageview"
@@ -29,13 +33,24 @@
             android:src="@mipmap/ic_launcher" />
 
         <TextView
-            android:id="@+id/pokemon_result_item_textview"
+            android:id="@+id/pokemon_result_item_name_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pokemon_name_placeholder"
             android:textColor="@color/palette_yellow"
             android:textSize="18sp" />
 
+        <TextView
+            android:id="@+id/pokemon_result_item_id_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/pokemon_number_placeholder"
+            android:textColor="@color/palette_gray"
+            android:textSize="18sp"
+            android:layout_weight="2"
+            android:layout_marginEnd="8dp"
+            android:gravity="end"/>
+
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

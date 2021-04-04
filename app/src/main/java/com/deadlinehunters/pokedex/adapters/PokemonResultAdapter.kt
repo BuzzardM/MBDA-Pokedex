@@ -1,5 +1,6 @@
 package com.deadlinehunters.pokedex.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
 import android.graphics.fonts.Font
@@ -22,7 +23,8 @@ class PokemonResultAdapter(
     ) : RecyclerView.Adapter<PokemonResultAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
-        val pokemonResultTextView: TextView = view.findViewById(R.id.pokemon_result_item_textview)
+        val pokemonResultNameTextView: TextView = view.findViewById(R.id.pokemon_result_item_name_textview)
+        val pokemonResultIdTextView: TextView = view.findViewById(R.id.pokemon_result_item_id_textview)
         val pokemonResultImageView: ImageView = view.findViewById(R.id.pokemon_result_item_imageview)
 
         init{
@@ -38,7 +40,7 @@ class PokemonResultAdapter(
                 }
             }
 
-            pokemonResultTextView.typeface = ResourcesCompat.getFont(view.context, font)
+            pokemonResultNameTextView.typeface = ResourcesCompat.getFont(view.context, font)
         }
         override fun onClick(v: View?) {
             val position: Int = adapterPosition
@@ -62,6 +64,7 @@ class PokemonResultAdapter(
     }
 
     // Replace the contents of a view (invoked by the layout manager)
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
@@ -75,7 +78,8 @@ class PokemonResultAdapter(
             context.packageName
         )
 
-        viewHolder.pokemonResultTextView.text = currentPokemonResult.name
+        viewHolder.pokemonResultNameTextView.text = currentPokemonResult.name
+        viewHolder.pokemonResultIdTextView.text = "No. " + String.format("%03d", (position+1))
         viewHolder.pokemonResultImageView.setImageResource(imageResource)
     }
 

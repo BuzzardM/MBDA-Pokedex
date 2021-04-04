@@ -15,4 +15,6 @@
     <string name="username_preference_default_value">User</string>
     <string name="pokedex_logo_content_description">Pokedex Logo</string>
     <string name="placeholder">Pokemon Details Placeholder</string>
+    <string name="favorites_logo_description">Favorites</string>
+    <string name="pokemon_number_placeholder">No. 000</string>
 </resources>

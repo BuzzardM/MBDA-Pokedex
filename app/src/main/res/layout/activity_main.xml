@@ -29,4 +29,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/main_nav"
         tools:ignore="FragmentTagUsage" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
