@@ -19,4 +19,17 @@
     <string name="pokemon_number_placeholder">No. 000</string>
     <string name="pokemon_background_content_description">pokemon background</string>
     <string name="pokemon_image_content_description">Pokemon Image</string>
+    <string name="back_arrow_content_description">Back arrow</string>
+    <string name="favorite_icon_content_description">Favorite Icon</string>
+    <string name="type_placeholder">Type placeholder</string>
+    <string name="pokemon_stat_hp">HP</string>
+    <string name="pokemon_stat_attack">Attack</string>
+    <string name="pokemon_stat_defense">Defense</string>
+    <string name="pokemon_label_spattack">Sp. Attack</string>
+    <string name="pokemon_stat_spdefense">Sp. Defense</string>
+    <string name="pokemon_stat_speed">Speed</string>
+    <string name="stat_placeholder">000</string>
+    <string name="pokemon_stat_weight">Weight</string>
+    <string name="pokemon_stat_height">Height</string>
+    <string name="pokemon_details_base_stats">Base Stats</string>
 </resources>
