@@ -4,15 +4,9 @@ import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -25,10 +19,12 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.deadlinehunters.pokedex.R
+import com.deadlinehunters.pokedex.fragments.EditPokemonNameFragment
 import com.deadlinehunters.pokedex.model.Pokemon
 import com.deadlinehunters.pokedex.model.PokemonResult
 
-class DetailActivity : AppCompatActivity() {
+
+class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonNameDialogListener {
 
     private val galleryRequest = 1
 
@@ -70,12 +66,16 @@ class DetailActivity : AppCompatActivity() {
                 (0 until jsonStats.length())
                     .asSequence()
                     .map { jsonStats.getJSONObject(it) }
-                    .forEach { stats[it.getJSONObject("stat").getString("name")] = it.getInt("base_stat") }
+                    .forEach {
+                        stats[it.getJSONObject("stat").getString("name")] = it.getInt("base_stat")
+                    }
 
                 (0 until jsonTypes.length())
                     .asSequence()
                     .map { jsonTypes.getJSONObject(it) }
-                    .forEach { types[it.getInt("slot")] = it.getJSONObject("type").getString("name") }
+                    .forEach {
+                        types[it.getInt("slot")] = it.getJSONObject("type").getString("name")
+                    }
 
                 fillView(Pokemon(id, name, height, weight, stats, types))
             },
@@ -265,4 +265,25 @@ class DetailActivity : AppCompatActivity() {
 
     private fun isPermissionGranted(permission: String): Boolean =
         ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+
+    @Suppress("UNUSED_PARAMETER")
+    fun backButtonOnClick(view: View) {
+        super.onBackPressed()
+    }
+
+    fun editBackgroundClick(view: View) {
+        // TODO: BACKGROUND SHIT
+    }
+    
+    fun editNameClick(view: View) {
+        val editFragment = EditPokemonNameFragment()
+        editFragment.show(supportFragmentManager, "fragment_edit_pokemon_name")
+        // TODO: FRAGMENT NOT SHOWING
+    }
+
+    override fun onFinishEditDialog(inputText: String?) {
+        findViewById<TextView>(R.id.pokemon_details_name_textview).text = inputText.toString()
+    }
+
+
 }
