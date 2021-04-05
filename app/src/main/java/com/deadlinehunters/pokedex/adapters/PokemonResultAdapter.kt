@@ -2,9 +2,6 @@ package com.deadlinehunters.pokedex.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Typeface
-import android.graphics.fonts.Font
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +11,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deadlinehunters.pokedex.R
-import com.deadlinehunters.pokedex.model.PokemonResult
+import com.deadlinehunters.pokedex.data.PokemonResult
 
 class PokemonResultAdapter(
     private val dataSet: List<PokemonResult>,

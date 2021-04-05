@@ -6,6 +6,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.ImageDecoder
 import android.os.Build
@@ -18,19 +19,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.deadlinehunters.pokedex.R
 import com.deadlinehunters.pokedex.fragments.EditPokemonNameFragment
-import com.deadlinehunters.pokedex.model.Pokemon
-import com.deadlinehunters.pokedex.model.PokemonResult
+import com.deadlinehunters.pokedex.data.Pokemon
+import com.deadlinehunters.pokedex.data.PokemonResult
+import com.deadlinehunters.pokedex.data.PokemonViewModel
+import java.io.ByteArrayOutputStream
 
 
 class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonNameDialogListener {
 
     private val galleryRequest = 1
+    private lateinit var mPokemonViewModel: PokemonViewModel
+    private lateinit var pokemon: Pokemon
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +45,8 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
 
         val requestQueue = Volley.newRequestQueue(applicationContext)
         getPokemonResults(requestQueue)
+
+        mPokemonViewModel = ViewModelProvider(this).get(PokemonViewModel::class.java)
     }
 
     private fun getPokemonResults(requestQueue: RequestQueue) {
@@ -72,7 +80,20 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
                         types[it.getInt("slot")] = it.getJSONObject("type").getString("name")
                     }
 
-                fillView(Pokemon(id, name, height, weight, stats, types))
+                pokemon = Pokemon(
+                    0, id, name, height, weight,
+                    stats["hp"]!!,
+                    stats["attack"]!!,
+                    stats["defense"]!!,
+                    stats["special-attack"]!!,
+                    stats["special-defense"]!!,
+                    stats["speed"]!!,
+                    types[1],
+                    types[2],
+                    null
+                )
+
+                fillView(pokemon)
             },
             { error ->
                 error.printStackTrace()
@@ -97,39 +118,33 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         val pokemonSpeedTextView = findViewById<TextView>(R.id.pokemon_stat_speed_textview)
 
         /* get needed variables */
-        val pokemonId = String.format("%03d", (pokemon.id))
+        val pokemonId = String.format("%03d", (pokemon.pokemonId))
         val imageResource = resources.getIdentifier(
             "@drawable/pokemon_$pokemonId",
             null,
             packageName
         )
-        val stats = pokemon.stats
-        val types = pokemon.types
 
         /* Set views with correct values */
         pokemonImageView.setImageResource(imageResource)
         pokemonNameTextView.text = pokemon.name.capitalize()
         pokemonNumberTextView.text = "No. $pokemonId"
-        pokemonWeightTextView.text = (pokemon.weight.toDouble()/10).toString() + " kg"
-        pokemonHeightTextView.text = (pokemon.height.toDouble()/10).toString() + " m"
-        pokemonHPTextView.text = stats["hp"].toString()
-        pokemonAttackTextView.text = stats["attack"].toString()
-        pokemonDefenseTextView.text = stats["defense"].toString()
-        pokemonSpAttackTextView.text = stats["special-attack"].toString()
-        pokemonSpDefenseTextView.text = stats["special-defense"].toString()
-        pokemonSpeedTextView.text = stats["speed"].toString()
-        
+        pokemonWeightTextView.text = (pokemon.weight.toDouble() / 10).toString() + " kg"
+        pokemonHeightTextView.text = (pokemon.height.toDouble() / 10).toString() + " m"
+        pokemonHPTextView.text = pokemon.hp.toString()
+        pokemonAttackTextView.text = pokemon.attack.toString()
+        pokemonDefenseTextView.text = pokemon.defense.toString()
+        pokemonSpAttackTextView.text = pokemon.spattack.toString()
+        pokemonSpDefenseTextView.text = pokemon.spdefense.toString()
+        pokemonSpeedTextView.text = pokemon.speed.toString()
+
         /* set type views */
-        for (i in 1..2) {
-            setType(i, types[i])
-        }
-       
+        setType(pokemon.type1, findViewById(R.id.pokemon_details_type1_textview))
+        setType(pokemon.type2, findViewById(R.id.pokemon_details_type2_textview))
     }
 
     @SuppressLint("DefaultLocale")
-    private fun setType(typeNumber: Int, typeName: String?) {
-        val pokemonType1TextView = findViewById<TextView>(R.id.pokemon_details_type1_textview)
-        val pokemonType2TextView = findViewById<TextView>(R.id.pokemon_details_type2_textview)
+    private fun setType(typeName: String?, view: TextView) {
         val drawable = AppCompatResources.getDrawable(this, R.drawable.type_background)
         val colorString: String
 
@@ -162,18 +177,9 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
             }
         }
 
-        when (typeNumber) {
-            1 -> {
-                pokemonType1TextView.text = mTypeName.toUpperCase()
-                drawable?.setTint(Color.parseColor(colorString))
-                pokemonType1TextView.background = drawable
-            }
-            2 -> {
-                pokemonType2TextView.text = mTypeName.toUpperCase()
-                drawable?.setTint(Color.parseColor(colorString))
-                pokemonType2TextView.background = drawable
-            }
-        }
+        view.text = mTypeName.toUpperCase()
+        drawable?.setTint(Color.parseColor(colorString))
+        view.background = drawable
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -188,8 +194,10 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
 
                     try {
                         selectedImage?.let {
+                            val bitmap: Bitmap
+
                             if (Build.VERSION.SDK_INT < 28) {
-                                val bitmap = MediaStore.Images.Media.getBitmap(
+                                bitmap = MediaStore.Images.Media.getBitmap(
                                     this.contentResolver,
                                     selectedImage
                                 )
@@ -197,9 +205,10 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
                             } else {
                                 val src =
                                     ImageDecoder.createSource(this.contentResolver, selectedImage)
-                                val bitmap = ImageDecoder.decodeBitmap(src)
+                                bitmap = ImageDecoder.decodeBitmap(src)
                                 img.setImageBitmap(bitmap)
                             }
+                            addImgToPokemon(bitmap)
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -276,7 +285,24 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
     }
 
     override fun onFinishEditDialog(inputText: String?) {
-        // TODO: CHANGE NAME IN MODEL FOR SAVING PURPOSES
         findViewById<TextView>(R.id.pokemon_details_name_textview).text = inputText.toString()
+        pokemon.name = inputText.toString()
+    }
+
+    fun favoriteButtonClick(view: View) {
+        insertPokemon()
+    }
+
+    private fun insertPokemon() {
+        if (pokemon.name.isNotBlank())
+            mPokemonViewModel.addPokemon(pokemon)
+    }
+
+    private fun addImgToPokemon(bitmap: Bitmap) {
+        val bos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos)
+        val bitArray = bos.toByteArray()
+
+        pokemon.background = bitArray
     }
 }
