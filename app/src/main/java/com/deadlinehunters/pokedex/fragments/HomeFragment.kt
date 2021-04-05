@@ -2,11 +2,9 @@ package com.deadlinehunters.pokedex.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,9 +15,7 @@ import com.android.volley.toolbox.Volley
 import com.deadlinehunters.pokedex.adapters.PokemonResultAdapter
 import com.deadlinehunters.pokedex.R
 import com.deadlinehunters.pokedex.activities.DetailActivity
-import com.deadlinehunters.pokedex.activities.MainActivity
-import com.deadlinehunters.pokedex.model.PokemonResult
-import com.google.android.material.snackbar.Snackbar
+import com.deadlinehunters.pokedex.data.PokemonResult
 
 
 class HomeFragment : Fragment(), PokemonResultAdapter.OnItemClickListener {

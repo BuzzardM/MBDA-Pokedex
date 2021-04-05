@@ -6,6 +6,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.ImageDecoder
 import android.os.Build
@@ -18,19 +19,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.deadlinehunters.pokedex.R
 import com.deadlinehunters.pokedex.fragments.EditPokemonNameFragment
-import com.deadlinehunters.pokedex.model.Pokemon
-import com.deadlinehunters.pokedex.model.PokemonResult
+import com.deadlinehunters.pokedex.data.Pokemon
+import com.deadlinehunters.pokedex.data.PokemonResult
+import com.deadlinehunters.pokedex.data.PokemonViewModel
+import java.io.ByteArrayOutputStream
 
 
 class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonNameDialogListener {
 
     private val galleryRequest = 1
+    private lateinit var mPokemonViewModel: PokemonViewModel
+    private lateinit var pokemon: Pokemon
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +45,8 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
 
         val requestQueue = Volley.newRequestQueue(applicationContext)
         getPokemonResults(requestQueue)
+
+        mPokemonViewModel = ViewModelProvider(this).get(PokemonViewModel::class.java)
     }
 
     private fun getPokemonResults(requestQueue: RequestQueue) {
@@ -72,7 +80,7 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
                         types[it.getInt("slot")] = it.getJSONObject("type").getString("name")
                     }
 
-                fillView(Pokemon(id, name, height, weight, stats, types))
+                fillView(Pokemon(0, id, name, height, weight, stats, types, null))
             },
             { error ->
                 error.printStackTrace()
@@ -97,7 +105,7 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         val pokemonSpeedTextView = findViewById<TextView>(R.id.pokemon_stat_speed_textview)
 
         /* get needed variables */
-        val pokemonId = String.format("%03d", (pokemon.id))
+        val pokemonId = String.format("%03d", (pokemon.pokemonId))
         val imageResource = resources.getIdentifier(
             "@drawable/pokemon_$pokemonId",
             null,
@@ -123,7 +131,6 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         for (i in 1..2) {
             setType(i, types[i])
         }
-       
     }
 
     @SuppressLint("DefaultLocale")
@@ -188,8 +195,10 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
 
                     try {
                         selectedImage?.let {
+                            val bitmap: Bitmap
+
                             if (Build.VERSION.SDK_INT < 28) {
-                                val bitmap = MediaStore.Images.Media.getBitmap(
+                                bitmap = MediaStore.Images.Media.getBitmap(
                                     this.contentResolver,
                                     selectedImage
                                 )
@@ -197,9 +206,10 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
                             } else {
                                 val src =
                                     ImageDecoder.createSource(this.contentResolver, selectedImage)
-                                val bitmap = ImageDecoder.decodeBitmap(src)
+                                bitmap = ImageDecoder.decodeBitmap(src)
                                 img.setImageBitmap(bitmap)
                             }
+                            addImgToPokemon(bitmap)
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -280,5 +290,20 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         findViewById<TextView>(R.id.pokemon_details_name_textview).text = inputText.toString()
     }
 
+    fun favoriteButtonClick(view: View) {
+        insertPokemon()
+    }
 
+    private fun insertPokemon(){
+        if(pokemon.name.isBlank())
+        mPokemonViewModel.addPokemon(pokemon)
+    }
+
+    private fun addImgToPokemon(bitmap: Bitmap){
+        val bos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos)
+        val bitArray = bos.toByteArray()
+
+        pokemon.background = bitArray
+    }
 }
