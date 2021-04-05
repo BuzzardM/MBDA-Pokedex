@@ -7,12 +7,15 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.ImageDecoder
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import android.view.View.VISIBLE
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -43,8 +46,14 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         setContentView(R.layout.activity_detail)
         supportActionBar?.hide()
 
-        val requestQueue = Volley.newRequestQueue(applicationContext)
-        getPokemonResults(requestQueue)
+        if(intent.hasExtra("favorite_pokemon")) {
+            pokemon = intent.getParcelableExtra("favorite_pokemon")!!
+            fillView(pokemon)
+            addFavoriteViewFeatures()
+        } else {
+            val requestQueue = Volley.newRequestQueue(applicationContext)
+            getPokemonResults(requestQueue)
+        }
 
         mPokemonViewModel = ViewModelProvider(this).get(PokemonViewModel::class.java)
     }
@@ -143,6 +152,21 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         setType(pokemon.type2, findViewById(R.id.pokemon_details_type2_textview))
     }
 
+    private fun addFavoriteViewFeatures() {
+        val deleteButton = findViewById<ImageButton>(R.id.pokemon_details_delete_pokemon_button)
+        val favoriteButton = findViewById<ImageButton>(R.id.pokemon_details_add_favorite_button)
+        val pokemonBackgroundImageView = findViewById<ImageView>(R.id.pokemon_details_background)
+
+        deleteButton.visibility = VISIBLE
+        favoriteButton.setImageResource(R.drawable.ic_save)
+        favoriteButton.setOnClickListener { mPokemonViewModel.updatePokemon(pokemon) }
+
+        if (pokemon.background != null && pokemon.background!!.size > 1) {
+            val bmp = BitmapFactory.decodeByteArray(pokemon.background, 0, pokemon.background!!.size)
+            pokemonBackgroundImageView.setImageBitmap(bmp)
+        }
+    }
+
     @SuppressLint("DefaultLocale")
     private fun setType(typeName: String?, view: TextView) {
         val drawable = AppCompatResources.getDrawable(this, R.drawable.type_background)
@@ -182,10 +206,11 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         view.background = drawable
     }
 
+    @Suppress("DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        val img = findViewById<ImageView>(R.id.header)
+        val img = findViewById<ImageView>(R.id.pokemon_details_background)
 
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
@@ -266,11 +291,14 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
     private fun isPermissionGranted(permission: String): Boolean =
         ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 
+    /* back button click handler */
     @Suppress("UNUSED_PARAMETER")
     fun backButtonOnClick(view: View) {
         super.onBackPressed()
     }
 
+    /* edit background click handler */
+    @Suppress("UNUSED_PARAMETER")
     fun editBackgroundClick(view: View) {
         if (requestPermission()) {
             val imgPicker = Intent(Intent.ACTION_PICK)
@@ -279,6 +307,15 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         }
     }
 
+    private fun addImgToPokemon(bitmap: Bitmap) {
+        val bos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos)
+        val bitArray = bos.toByteArray()
+        pokemon.background = bitArray
+    }
+
+    /* methods for editing pokemon name */
+    @Suppress("UNUSED_PARAMETER")
     fun editNameClick(view: View) {
         val editFragment = EditPokemonNameFragment()
         editFragment.show(supportFragmentManager, "fragment_edit_pokemon_name")
@@ -289,20 +326,17 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         pokemon.name = inputText.toString()
     }
 
+    /* favorite button click handler */
+    @Suppress("UNUSED_PARAMETER")
     fun favoriteButtonClick(view: View) {
-        insertPokemon()
+        mPokemonViewModel.addPokemon(pokemon)
+        super.onBackPressed()
     }
 
-    private fun insertPokemon() {
-        if (pokemon.name.isNotBlank())
-            mPokemonViewModel.addPokemon(pokemon)
-    }
-
-    private fun addImgToPokemon(bitmap: Bitmap) {
-        val bos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos)
-        val bitArray = bos.toByteArray()
-
-        pokemon.background = bitArray
+    /* delete button click handler */
+    @Suppress("UNUSED_PARAMETER")
+    fun deleteButtonClick(view: View) {
+        mPokemonViewModel.deletePokemon(pokemon.id)
+        super.onBackPressed()
     }
 }

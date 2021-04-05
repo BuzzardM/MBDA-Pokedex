@@ -1,18 +1,20 @@
 package com.deadlinehunters.pokedex.fragments
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deadlinehunters.pokedex.R
+import com.deadlinehunters.pokedex.activities.DetailActivity
 import com.deadlinehunters.pokedex.adapters.PokemonFavoriteAdapter
-import com.deadlinehunters.pokedex.adapters.PokemonResultAdapter
 import com.deadlinehunters.pokedex.data.Pokemon
+import com.deadlinehunters.pokedex.data.PokemonViewModel
 
 class FavoritesFragment : Fragment(), PokemonFavoriteAdapter.OnItemClickListener {
 
@@ -27,12 +29,8 @@ class FavoritesFragment : Fragment(), PokemonFavoriteAdapter.OnItemClickListener
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val pokemon = mutableListOf<Pokemon>()
-
-        // TODO: GET POKEMON FROM DATABASE
-
         val adapter =
-            activity?.applicationContext?.let { PokemonFavoriteAdapter(pokemon, it, this) }
+            activity?.applicationContext?.let { PokemonFavoriteAdapter(it, this) }
         val recyclerView = view?.findViewById<RecyclerView>(R.id.pokemon_favorites_recyclerview)
 
         if (recyclerView != null) {
@@ -40,9 +38,15 @@ class FavoritesFragment : Fragment(), PokemonFavoriteAdapter.OnItemClickListener
             recyclerView.layoutManager = GridLayoutManager(activity?.applicationContext, 5)
         }
 
+        val mPokemonViewModel: PokemonViewModel = ViewModelProvider(this).get(PokemonViewModel::class.java)
+        mPokemonViewModel.getAllPokemon().observe(viewLifecycleOwner, Observer { pokemon ->
+            adapter?.addPokemon(pokemon)
+        })
     }
 
     override fun onItemClick(pokemon: Pokemon) {
-        TODO("Not yet implemented")
+        val i = Intent(requireContext(), DetailActivity::class.java)
+        i.putExtra("favorite_pokemon", pokemon)
+        startActivity(i)
     }
 }

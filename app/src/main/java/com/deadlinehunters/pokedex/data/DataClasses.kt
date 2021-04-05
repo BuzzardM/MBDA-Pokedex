@@ -9,6 +9,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class PokemonResult (val name: String, val url: String) : Parcelable
 
+@Parcelize
 @Entity(tableName = "pokemon_table")
 data class Pokemon(
     @PrimaryKey(autoGenerate = true)
@@ -26,4 +27,4 @@ data class Pokemon(
     val type1: String?,
     val type2: String?,
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
-    var background: ByteArray?)
+    var background: ByteArray?) : Parcelable

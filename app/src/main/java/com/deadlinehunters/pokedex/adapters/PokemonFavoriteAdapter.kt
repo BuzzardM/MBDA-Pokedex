@@ -1,5 +1,6 @@
 package com.deadlinehunters.pokedex.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,10 +13,11 @@ import com.deadlinehunters.pokedex.R
 import com.deadlinehunters.pokedex.data.Pokemon
 
 class PokemonFavoriteAdapter(
-    private val dataSet: List<Pokemon>,
     private val context: Context,
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<PokemonFavoriteAdapter.ViewHolder>() {
+
+    private var dataSet = listOf<Pokemon>()
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         val pokemonFavoriteNameTextView: TextView =
@@ -47,10 +49,11 @@ class PokemonFavoriteAdapter(
         return ViewHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val currentPokemonResult = dataSet[position]
 
-        val pokemonId = String.format("%03d", (currentPokemonResult.id))
+        val pokemonId = String.format("%03d", (currentPokemonResult.pokemonId))
         val uri = "@drawable/sprite_$pokemonId"
         val imageResource = context.resources.getIdentifier(
             uri,
@@ -58,10 +61,18 @@ class PokemonFavoriteAdapter(
             context.packageName
         )
 
-        viewHolder.pokemonFavoriteNameTextView.text = currentPokemonResult.name
+        if (currentPokemonResult.name.length > 4)
+            viewHolder.pokemonFavoriteNameTextView.text = currentPokemonResult.name.substring(0, 4) + ".."
+        else
+            viewHolder.pokemonFavoriteNameTextView.text = currentPokemonResult.name
+
         viewHolder.pokemonFavoriteImageView.setImageResource(imageResource)
     }
 
     override fun getItemCount() = dataSet.size
 
+    fun addPokemon(pokemon: List<Pokemon>) {
+        this.dataSet = pokemon
+        notifyDataSetChanged()
+    }
 }
