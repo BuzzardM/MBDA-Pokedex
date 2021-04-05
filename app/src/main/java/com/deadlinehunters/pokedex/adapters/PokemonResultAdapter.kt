@@ -11,21 +11,26 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deadlinehunters.pokedex.R
+import com.deadlinehunters.pokedex.data.Pokemon
 import com.deadlinehunters.pokedex.data.PokemonResult
 
 class PokemonResultAdapter(
-    private val dataSet: List<PokemonResult>,
     private val context: Context,
     private val listener: OnItemClickListener
-    ) : RecyclerView.Adapter<PokemonResultAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<PokemonResultAdapter.ViewHolder>() {
+
+    private var dataSet = listOf<PokemonResult>()
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
-        val pokemonResultNameTextView: TextView = view.findViewById(R.id.pokemon_result_item_name_textview)
-        val pokemonResultIdTextView: TextView = view.findViewById(R.id.pokemon_result_item_id_textview)
-        val pokemonResultImageView: ImageView = view.findViewById(R.id.pokemon_result_item_imageview)
+        val pokemonResultNameTextView: TextView =
+            view.findViewById(R.id.pokemon_result_item_name_textview)
+        val pokemonResultIdTextView: TextView =
+            view.findViewById(R.id.pokemon_result_item_id_textview)
+        val pokemonResultImageView: ImageView =
+            view.findViewById(R.id.pokemon_result_item_imageview)
 
-        init{
-           view.setOnClickListener(this)
+        init {
+            view.setOnClickListener(this)
 
             val preferences = PreferenceManager.getDefaultSharedPreferences(view.context)
 
@@ -39,15 +44,16 @@ class PokemonResultAdapter(
 
             pokemonResultNameTextView.typeface = ResourcesCompat.getFont(view.context, font)
         }
+
         override fun onClick(v: View?) {
             val position: Int = adapterPosition
 
-            if(position != RecyclerView.NO_POSITION)
+            if (position != RecyclerView.NO_POSITION)
                 listener.onItemClick(dataSet[position])
         }
     }
 
-    interface OnItemClickListener{
+    interface OnItemClickListener {
         fun onItemClick(pokemonResult: PokemonResult)
     }
 
@@ -56,7 +62,7 @@ class PokemonResultAdapter(
         // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(context)
             .inflate(R.layout.pokemon_result_item, viewGroup, false)
-        
+
         return ViewHolder(view)
     }
 
@@ -67,7 +73,7 @@ class PokemonResultAdapter(
         // contents of the view with that element
         val currentPokemonResult = dataSet[position]
 
-        val pokemonId = String.format("%03d", (position+1))
+        val pokemonId = String.format("%03d", (position + 1))
         val uri = "@drawable/sprite_$pokemonId"
         val imageResource = context.resources.getIdentifier(
             uri,
@@ -85,5 +91,9 @@ class PokemonResultAdapter(
         return dataSet.size
     }
 
+    fun addPokemonResult(pokemonResult: List<PokemonResult>) {
+        this.dataSet = pokemonResult
+        notifyDataSetChanged()
+    }
 
 }

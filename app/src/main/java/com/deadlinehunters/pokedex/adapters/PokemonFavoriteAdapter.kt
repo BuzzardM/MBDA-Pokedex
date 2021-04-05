@@ -2,7 +2,6 @@ package com.deadlinehunters.pokedex.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,7 +37,7 @@ class PokemonFavoriteAdapter(
         }
     }
 
-    interface OnItemClickListener{
+    interface OnItemClickListener {
         fun onItemClick(pokemon: Pokemon)
     }
 
@@ -62,7 +61,8 @@ class PokemonFavoriteAdapter(
         )
 
         if (currentPokemonResult.name.length > 4)
-            viewHolder.pokemonFavoriteNameTextView.text = currentPokemonResult.name.substring(0, 4) + ".."
+            viewHolder.pokemonFavoriteNameTextView.text =
+                currentPokemonResult.name.substring(0, 4) + ".."
         else
             viewHolder.pokemonFavoriteNameTextView.text = currentPokemonResult.name
 

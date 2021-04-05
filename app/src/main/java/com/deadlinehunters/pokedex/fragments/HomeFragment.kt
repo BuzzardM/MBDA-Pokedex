@@ -12,9 +12,9 @@ import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.deadlinehunters.pokedex.adapters.PokemonResultAdapter
 import com.deadlinehunters.pokedex.R
 import com.deadlinehunters.pokedex.activities.DetailActivity
+import com.deadlinehunters.pokedex.adapters.PokemonResultAdapter
 import com.deadlinehunters.pokedex.data.PokemonResult
 
 
@@ -30,11 +30,19 @@ class HomeFragment : Fragment(), PokemonResultAdapter.OnItemClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        val adapter = activity?.applicationContext?.let { PokemonResultAdapter(it, this)}
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.pokemon_overview_recyclerview)
+
+        if (recyclerView != null) {
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = LinearLayoutManager(activity?.applicationContext)
+        }
+
         val requestQueue = Volley.newRequestQueue(activity?.applicationContext)
-        getPokemonResults(requestQueue)
+        getPokemonResults(requestQueue, adapter)
     }
 
-    private fun getPokemonResults(requestQueue: RequestQueue) {
+    private fun getPokemonResults(requestQueue: RequestQueue, adapter: PokemonResultAdapter?) {
         val url = "https://pokeapi.co/api/v2/pokemon?limit=151"
         val pokemonResults = mutableListOf<PokemonResult>()
 
@@ -50,14 +58,7 @@ class HomeFragment : Fragment(), PokemonResultAdapter.OnItemClickListener {
                         )
                     )
                 }
-
-                val adapter = activity?.applicationContext?.let { PokemonResultAdapter(pokemonResults, it, this)}
-                val recyclerView = view?.findViewById<RecyclerView>(R.id.pokemon_overview_recyclerview)
-
-                if (recyclerView != null) {
-                    recyclerView.adapter = adapter
-                    recyclerView.layoutManager = LinearLayoutManager(activity?.applicationContext)
-                }
+                adapter?.addPokemonResult(pokemonResults)
             },
             { error ->
                 error.printStackTrace()

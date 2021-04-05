@@ -18,6 +18,7 @@ import android.view.View.VISIBLE
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
@@ -28,10 +29,10 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.deadlinehunters.pokedex.R
-import com.deadlinehunters.pokedex.fragments.EditPokemonNameFragment
 import com.deadlinehunters.pokedex.data.Pokemon
 import com.deadlinehunters.pokedex.data.PokemonResult
 import com.deadlinehunters.pokedex.data.PokemonViewModel
+import com.deadlinehunters.pokedex.fragments.EditPokemonNameFragment
 import java.io.ByteArrayOutputStream
 
 
@@ -46,7 +47,7 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         setContentView(R.layout.activity_detail)
         supportActionBar?.hide()
 
-        if(intent.hasExtra("favorite_pokemon")) {
+        if (intent.hasExtra("favorite_pokemon")) {
             pokemon = intent.getParcelableExtra("favorite_pokemon")!!
             fillView(pokemon)
             addFavoriteViewFeatures()
@@ -159,10 +160,18 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
 
         deleteButton.visibility = VISIBLE
         favoriteButton.setImageResource(R.drawable.ic_save)
-        favoriteButton.setOnClickListener { mPokemonViewModel.updatePokemon(pokemon) }
+        favoriteButton.setOnClickListener {
+            mPokemonViewModel.updatePokemon(pokemon)
+            Toast.makeText(
+                applicationContext,
+                "${pokemon.name} has been added to favorites!",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
 
         if (pokemon.background != null && pokemon.background!!.size > 1) {
-            val bmp = BitmapFactory.decodeByteArray(pokemon.background, 0, pokemon.background!!.size)
+            val bmp =
+                BitmapFactory.decodeByteArray(pokemon.background, 0, pokemon.background!!.size)
             pokemonBackgroundImageView.setImageBitmap(bmp)
         }
     }
@@ -330,6 +339,11 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
     @Suppress("UNUSED_PARAMETER")
     fun favoriteButtonClick(view: View) {
         mPokemonViewModel.addPokemon(pokemon)
+        Toast.makeText(
+            applicationContext,
+            "${pokemon.name} has been added to favorites!",
+            Toast.LENGTH_SHORT
+        ).show()
         super.onBackPressed()
     }
 
@@ -337,6 +351,8 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
     @Suppress("UNUSED_PARAMETER")
     fun deleteButtonClick(view: View) {
         mPokemonViewModel.deletePokemon(pokemon.id)
+        Toast.makeText(applicationContext, "${pokemon.name} has been deleted!", Toast.LENGTH_SHORT)
+            .show()
         super.onBackPressed()
     }
 }
