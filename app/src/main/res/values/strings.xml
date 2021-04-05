@@ -21,7 +21,7 @@
     <string name="pokemon_image_content_description">Pokemon Image</string>
     <string name="back_arrow_content_description">Back arrow</string>
     <string name="favorite_icon_content_description">Favorite Icon</string>
-    <string name="type_placeholder">Type placeholder</string>
+    <string name="type_placeholder">none</string>
     <string name="pokemon_stat_hp">HP</string>
     <string name="pokemon_stat_attack">Attack</string>
     <string name="pokemon_stat_defense">Defense</string>

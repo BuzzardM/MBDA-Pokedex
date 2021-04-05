@@ -79,7 +79,7 @@ class PokemonResultAdapter(
         )
 
         viewHolder.pokemonResultNameTextView.text = currentPokemonResult.name
-        viewHolder.pokemonResultIdTextView.text = "No. " + String.format("%03d", (position+1))
+        viewHolder.pokemonResultIdTextView.text = "No. $pokemonId"
         viewHolder.pokemonResultImageView.setImageResource(imageResource)
     }
 
