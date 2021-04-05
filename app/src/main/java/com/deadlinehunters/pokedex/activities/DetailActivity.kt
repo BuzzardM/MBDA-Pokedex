@@ -80,7 +80,16 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
                         types[it.getInt("slot")] = it.getJSONObject("type").getString("name")
                     }
 
-                fillView(Pokemon(0, id, name, height, weight, stats, types, null))
+                fillView(Pokemon(0, id, name, height, weight,
+                    stats["hp"]!!,
+                    stats["attack"]!!,
+                    stats["defense"]!!,
+                    stats["special-attack"]!!,
+                    stats["special-defense"]!!,
+                    stats["speed"]!!,
+                    types[1],
+                    types[2],
+                    null))
             },
             { error ->
                 error.printStackTrace()
@@ -111,8 +120,6 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
             null,
             packageName
         )
-        val stats = pokemon.stats
-        val types = pokemon.types
 
         /* Set views with correct values */
         pokemonImageView.setImageResource(imageResource)
@@ -120,23 +127,20 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         pokemonNumberTextView.text = "No. $pokemonId"
         pokemonWeightTextView.text = (pokemon.weight.toDouble()/10).toString() + " kg"
         pokemonHeightTextView.text = (pokemon.height.toDouble()/10).toString() + " m"
-        pokemonHPTextView.text = stats["hp"].toString()
-        pokemonAttackTextView.text = stats["attack"].toString()
-        pokemonDefenseTextView.text = stats["defense"].toString()
-        pokemonSpAttackTextView.text = stats["special-attack"].toString()
-        pokemonSpDefenseTextView.text = stats["special-defense"].toString()
-        pokemonSpeedTextView.text = stats["speed"].toString()
+        pokemonHPTextView.text = pokemon.hp.toString()
+        pokemonAttackTextView.text = pokemon.attack.toString()
+        pokemonDefenseTextView.text = pokemon.defense.toString()
+        pokemonSpAttackTextView.text = pokemon.spattack.toString()
+        pokemonSpDefenseTextView.text = pokemon.spdefense.toString()
+        pokemonSpeedTextView.text = pokemon.speed.toString()
 
         /* set type views */
-        for (i in 1..2) {
-            setType(i, types[i])
-        }
+        setType(pokemon.type1, findViewById(R.id.pokemon_details_type1_textview))
+        setType(pokemon.type2, findViewById(R.id.pokemon_details_type2_textview))
     }
 
     @SuppressLint("DefaultLocale")
-    private fun setType(typeNumber: Int, typeName: String?) {
-        val pokemonType1TextView = findViewById<TextView>(R.id.pokemon_details_type1_textview)
-        val pokemonType2TextView = findViewById<TextView>(R.id.pokemon_details_type2_textview)
+    private fun setType(typeName: String?, view: TextView) {
         val drawable = AppCompatResources.getDrawable(this, R.drawable.type_background)
         val colorString: String
 
@@ -169,18 +173,9 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
             }
         }
 
-        when (typeNumber) {
-            1 -> {
-                pokemonType1TextView.text = mTypeName.toUpperCase()
-                drawable?.setTint(Color.parseColor(colorString))
-                pokemonType1TextView.background = drawable
-            }
-            2 -> {
-                pokemonType2TextView.text = mTypeName.toUpperCase()
-                drawable?.setTint(Color.parseColor(colorString))
-                pokemonType2TextView.background = drawable
-            }
-        }
+        view.text = mTypeName.toUpperCase()
+        drawable?.setTint(Color.parseColor(colorString))
+        view.background = drawable
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -286,8 +281,8 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
     }
 
     override fun onFinishEditDialog(inputText: String?) {
-        // TODO: CHANGE NAME IN MODEL FOR SAVING PURPOSES
         findViewById<TextView>(R.id.pokemon_details_name_textview).text = inputText.toString()
+        pokemon.name = inputText.toString()
     }
 
     fun favoriteButtonClick(view: View) {
@@ -295,8 +290,8 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
     }
 
     private fun insertPokemon(){
-        if(pokemon.name.isBlank())
-        mPokemonViewModel.addPokemon(pokemon)
+        if(pokemon.name.isNotBlank())
+            mPokemonViewModel.addPokemon(pokemon)
     }
 
     private fun addImgToPokemon(bitmap: Bitmap){
