@@ -34,4 +34,5 @@
     <string name="pokemon_details_base_stats">Base Stats</string>
     <string name="edit_icon">Edit Icon</string>
     <string name="edit_enter_pokemon_name">Enter Pokemon name</string>
+    <string name="enter_new_name_hint">Enter new name</string>
 </resources>

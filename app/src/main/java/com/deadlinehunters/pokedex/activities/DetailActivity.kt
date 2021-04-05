@@ -278,12 +278,10 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
     fun editNameClick(view: View) {
         val editFragment = EditPokemonNameFragment()
         editFragment.show(supportFragmentManager, "fragment_edit_pokemon_name")
-        // TODO: FRAGMENT NOT SHOWING
     }
 
     override fun onFinishEditDialog(inputText: String?) {
+        // TODO: CHANGE NAME IN MODEL FOR SAVING PURPOSES
         findViewById<TextView>(R.id.pokemon_details_name_textview).text = inputText.toString()
     }
-
-
 }
