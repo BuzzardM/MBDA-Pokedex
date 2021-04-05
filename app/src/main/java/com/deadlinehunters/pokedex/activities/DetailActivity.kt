@@ -80,7 +80,8 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
                         types[it.getInt("slot")] = it.getJSONObject("type").getString("name")
                     }
 
-                fillView(Pokemon(0, id, name, height, weight,
+                pokemon = Pokemon(
+                    0, id, name, height, weight,
                     stats["hp"]!!,
                     stats["attack"]!!,
                     stats["defense"]!!,
@@ -89,7 +90,10 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
                     stats["speed"]!!,
                     types[1],
                     types[2],
-                    null))
+                    null
+                )
+
+                fillView(pokemon)
             },
             { error ->
                 error.printStackTrace()
@@ -125,8 +129,8 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         pokemonImageView.setImageResource(imageResource)
         pokemonNameTextView.text = pokemon.name.capitalize()
         pokemonNumberTextView.text = "No. $pokemonId"
-        pokemonWeightTextView.text = (pokemon.weight.toDouble()/10).toString() + " kg"
-        pokemonHeightTextView.text = (pokemon.height.toDouble()/10).toString() + " m"
+        pokemonWeightTextView.text = (pokemon.weight.toDouble() / 10).toString() + " kg"
+        pokemonHeightTextView.text = (pokemon.height.toDouble() / 10).toString() + " m"
         pokemonHPTextView.text = pokemon.hp.toString()
         pokemonAttackTextView.text = pokemon.attack.toString()
         pokemonDefenseTextView.text = pokemon.defense.toString()
@@ -289,12 +293,12 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         insertPokemon()
     }
 
-    private fun insertPokemon(){
-        if(pokemon.name.isNotBlank())
+    private fun insertPokemon() {
+        if (pokemon.name.isNotBlank())
             mPokemonViewModel.addPokemon(pokemon)
     }
 
-    private fun addImgToPokemon(bitmap: Bitmap){
+    private fun addImgToPokemon(bitmap: Bitmap) {
         val bos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, bos)
         val bitArray = bos.toByteArray()
