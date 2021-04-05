@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,17 +7,22 @@
     android:layout_marginStart="8dp"
     android:layout_marginTop="2dp"
     android:layout_marginEnd="8dp"
-    android:layout_marginBottom="2dp">
+    android:layout_marginBottom="2dp"
+    android:theme="@style/Theme.Pokedex"
+    app:strokeWidth="2dp"
+    android:layout_weight="0.2"
+    app:strokeColor="@color/black">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="10dp"
         tools:ignore="UseCompoundDrawables">
 
         <ImageView
-            android:id="@+id/pokemon_result_item_imageview"
+            android:id="@+id/pokemon_favorite_item_imageview"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
@@ -28,14 +33,13 @@
             android:src="@mipmap/ic_launcher" />
 
         <TextView
-            android:id="@+id/pokemon_result_item_textview"
+            android:id="@+id/pokemon_favorite_item_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/pokemon_font"
             android:text="@string/pokemon_name_placeholder"
             android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

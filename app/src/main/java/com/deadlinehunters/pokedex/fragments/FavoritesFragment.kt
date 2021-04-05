@@ -6,9 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.deadlinehunters.pokedex.R
+import com.deadlinehunters.pokedex.adapters.PokemonFavoriteAdapter
+import com.deadlinehunters.pokedex.adapters.PokemonResultAdapter
+import com.deadlinehunters.pokedex.model.Pokemon
 
-class FavoritesFragment : Fragment() {
+class FavoritesFragment : Fragment(), PokemonFavoriteAdapter.OnItemClickListener {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -20,11 +26,23 @@ class FavoritesFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        val pokemon = mutableListOf<Pokemon>()
+
+        // TODO: GET POKEMON FROM DATABASE
+
+        val adapter =
+            activity?.applicationContext?.let { PokemonFavoriteAdapter(pokemon, it, this) }
+        val recyclerView = view?.findViewById<RecyclerView>(R.id.pokemon_favorites_recyclerview)
+
+        if (recyclerView != null) {
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = GridLayoutManager(activity?.applicationContext, 5)
+        }
+
     }
 
-    companion object {
-        fun newInstance(): FavoritesFragment {
-            return FavoritesFragment()
-        }
+    override fun onItemClick(pokemon: Pokemon) {
+        TODO("Not yet implemented")
     }
 }

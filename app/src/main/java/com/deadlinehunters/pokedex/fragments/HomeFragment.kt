@@ -38,12 +38,6 @@ class HomeFragment : Fragment(), PokemonResultAdapter.OnItemClickListener {
         getPokemonResults(requestQueue)
     }
 
-    companion object {
-        fun newInstance(): HomeFragment {
-            return HomeFragment()
-        }
-    }
-
     private fun getPokemonResults(requestQueue: RequestQueue) {
         val url = "https://pokeapi.co/api/v2/pokemon?limit=151"
         val pokemonResults = mutableListOf<PokemonResult>()

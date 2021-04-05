@@ -10,9 +10,9 @@
     <string name="font_preference_dialog_title">Change pokémon name font</string>
     <string name="font_preference_title">Choose font</string>
     <string name="font_preference_default_value">normal</string>
-    <string name="username_preference_summary">Enter your username used for greetings</string>
-    <string name="username_preference_username">Username</string>
-    <string name="username_preference_default_value">User</string>
+    <string name="username_preference_summary">Enter your trainer name used for greetings</string>
+    <string name="username_preference_username">Trainer name</string>
+    <string name="username_preference_default_value">Trainer</string>
     <string name="pokedex_logo_content_description">Pokedex Logo</string>
     <string name="placeholder">Pokemon Details Placeholder</string>
     <string name="favorites_logo_description">Favorites</string>

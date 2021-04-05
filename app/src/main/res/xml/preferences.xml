@@ -13,10 +13,10 @@
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="User">
+    <PreferenceCategory android:title="Trainer">
         <EditTextPreference
             android:defaultValue="@string/username_preference_default_value"
-            android:key="username_preference"
+            android:key="trainername_preference"
             android:summary="@string/username_preference_summary"
             android:title="@string/username_preference_username" />
     </PreferenceCategory>
