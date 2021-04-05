@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deadlinehunters.pokedex.R
 import com.deadlinehunters.pokedex.adapters.PokemonFavoriteAdapter
 import com.deadlinehunters.pokedex.adapters.PokemonResultAdapter
-import com.deadlinehunters.pokedex.model.Pokemon
+import com.deadlinehunters.pokedex.data.Pokemon
 
 class FavoritesFragment : Fragment(), PokemonFavoriteAdapter.OnItemClickListener {
 
