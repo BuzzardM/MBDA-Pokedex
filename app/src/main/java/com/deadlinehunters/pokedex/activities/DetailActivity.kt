@@ -126,7 +126,7 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         pokemonSpAttackTextView.text = stats["special-attack"].toString()
         pokemonSpDefenseTextView.text = stats["special-defense"].toString()
         pokemonSpeedTextView.text = stats["speed"].toString()
-        
+
         /* set type views */
         for (i in 1..2) {
             setType(i, types[i])
@@ -283,10 +283,10 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
     fun editNameClick(view: View) {
         val editFragment = EditPokemonNameFragment()
         editFragment.show(supportFragmentManager, "fragment_edit_pokemon_name")
-        // TODO: FRAGMENT NOT SHOWING
     }
 
     override fun onFinishEditDialog(inputText: String?) {
+        // TODO: CHANGE NAME IN MODEL FOR SAVING PURPOSES
         findViewById<TextView>(R.id.pokemon_details_name_textview).text = inputText.toString()
     }
 
