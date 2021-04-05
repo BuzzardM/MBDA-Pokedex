@@ -4,9 +4,13 @@ import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.ImageDecoder
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -35,15 +39,6 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
 
         val requestQueue = Volley.newRequestQueue(applicationContext)
         getPokemonResults(requestQueue)
-
-//        val changeImg = findViewById<Button>(R.id.changeImgBtn)
-//        changeImg.setOnClickListener {
-//            if (requestPermission()) {
-//                val imgPicker = Intent(Intent.ACTION_PICK)
-//                imgPicker.type = "image/*"
-//                startActivityForResult(imgPicker, galleryRequest)
-//            }
-//        }
     }
 
     private fun getPokemonResults(requestQueue: RequestQueue) {
@@ -179,44 +174,40 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
                 pokemonType2TextView.background = drawable
             }
         }
-
-
-
-
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//
-//        val img = findViewById<ImageView>(R.id.coolImg)
-//
-//        if (resultCode == Activity.RESULT_OK) {
-//            when (requestCode) {
-//                galleryRequest -> {
-//                    val selectedImage = data?.data
-//
-//                    try {
-//                        selectedImage?.let {
-//                            if (Build.VERSION.SDK_INT < 28) {
-//                                val bitmap = MediaStore.Images.Media.getBitmap(
-//                                    this.contentResolver,
-//                                    selectedImage
-//                                )
-//                                img.setImageBitmap(bitmap)
-//                            } else {
-//                                val src =
-//                                    ImageDecoder.createSource(this.contentResolver, selectedImage)
-//                                val bitmap = ImageDecoder.decodeBitmap(src)
-//                                img.setImageBitmap(bitmap)
-//                            }
-//                        }
-//                    } catch (e: Exception) {
-//                        e.printStackTrace()
-//                    }
-//                }
-//            }
-//        }
-//    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        val img = findViewById<ImageView>(R.id.header)
+
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                galleryRequest -> {
+                    val selectedImage = data?.data
+
+                    try {
+                        selectedImage?.let {
+                            if (Build.VERSION.SDK_INT < 28) {
+                                val bitmap = MediaStore.Images.Media.getBitmap(
+                                    this.contentResolver,
+                                    selectedImage
+                                )
+                                img.setImageBitmap(bitmap)
+                            } else {
+                                val src =
+                                    ImageDecoder.createSource(this.contentResolver, selectedImage)
+                                val bitmap = ImageDecoder.decodeBitmap(src)
+                                img.setImageBitmap(bitmap)
+                            }
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+        }
+    }
 
     private fun requestPermission(): Boolean {
         if (!isPermissionGranted(READ_EXTERNAL_STORAGE)) {
@@ -272,9 +263,13 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
     }
 
     fun editBackgroundClick(view: View) {
-        // TODO: BACKGROUND SHIT
+        if (requestPermission()) {
+            val imgPicker = Intent(Intent.ACTION_PICK)
+            imgPicker.type = "image/*"
+            startActivityForResult(imgPicker, galleryRequest)
+        }
     }
-    
+
     fun editNameClick(view: View) {
         val editFragment = EditPokemonNameFragment()
         editFragment.show(supportFragmentManager, "fragment_edit_pokemon_name")
