@@ -4,6 +4,7 @@ import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -13,6 +14,7 @@ import android.graphics.ImageDecoder
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
 import android.widget.ImageButton
@@ -42,29 +44,32 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
     private lateinit var mPokemonViewModel: PokemonViewModel
     private lateinit var pokemon: Pokemon
 
+    @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail)
         supportActionBar?.hide()
-
-        if (intent.hasExtra("favorite_pokemon")) {
-            pokemon = intent.getParcelableExtra("favorite_pokemon")!!
-            fillView(pokemon)
-            addFavoriteViewFeatures()
-        } else {
-            val requestQueue = Volley.newRequestQueue(applicationContext)
-            getPokemonResults(requestQueue)
-        }
-
         mPokemonViewModel = ViewModelProvider(this).get(PokemonViewModel::class.java)
+
+        val view = (getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.activity_detail, null)
+        prepareAndShowView(view)
     }
 
-    private fun getPokemonResults(requestQueue: RequestQueue) {
-        val pokemonData: PokemonResult? = intent.getParcelableExtra("pokemon_data")
-        val url = pokemonData?.url
+    private fun prepareAndShowView(view: View) {
+        if (intent.hasExtra("favorite_pokemon")) {
+            pokemon = intent.getParcelableExtra("favorite_pokemon")!!
+            prepareAndShowWithoutAPICall(view, pokemon)
+        } else {
+            val pokemonData: PokemonResult? = intent.getParcelableExtra("pokemon_data")
+            prepareAndShowWithAPICall(view, Volley.newRequestQueue(applicationContext), pokemonData)
+        }
+    }
+
+    private fun prepareAndShowWithAPICall(view: View, requestQueue: RequestQueue, pokemonData: PokemonResult?) {
+        if (pokemonData == null)
+            return
 
         val request = JsonObjectRequest(
-            Request.Method.GET, url, null,
+            Request.Method.GET, pokemonData.url, null,
             { response ->
                 val height = response.getInt("height")
                 val weight = response.getInt("weight")
@@ -103,7 +108,8 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
                     null
                 )
 
-                fillView(pokemon)
+                fillView(view, pokemon)
+                showView(view)
             },
             { error ->
                 error.printStackTrace()
@@ -112,20 +118,30 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         requestQueue.add(request)
     }
 
+    private fun prepareAndShowWithoutAPICall(view: View, pokemon: Pokemon) {
+        fillView(view, pokemon)
+        addFavoriteViewFeatures(view)
+        showView(view)
+    }
+
+    private fun showView(view: View) {
+        setContentView(view)
+    }
+
     @SuppressLint("SetTextI18n", "DefaultLocale")
-    private fun fillView(pokemon: Pokemon) {
+    private fun fillView(view: View, pokemon: Pokemon) {
         /* Get all views */
-        val pokemonImageView = findViewById<ImageView>(R.id.pokemon_details_imageview)
-        val pokemonNameTextView = findViewById<TextView>(R.id.pokemon_details_name_textview)
-        val pokemonNumberTextView = findViewById<TextView>(R.id.pokemon_details_number_textview)
-        val pokemonWeightTextView = findViewById<TextView>(R.id.pokemon_details_weight_label)
-        val pokemonHeightTextView = findViewById<TextView>(R.id.pokemon_details_height_label)
-        val pokemonHPTextView = findViewById<TextView>(R.id.pokemon_stat_hp_textview)
-        val pokemonAttackTextView = findViewById<TextView>(R.id.pokemon_stat_attack_textview)
-        val pokemonDefenseTextView = findViewById<TextView>(R.id.pokemon_stat_defense_textview)
-        val pokemonSpAttackTextView = findViewById<TextView>(R.id.pokemon_stat_spattack_textview)
-        val pokemonSpDefenseTextView = findViewById<TextView>(R.id.pokemon_stat_spdefense_textview)
-        val pokemonSpeedTextView = findViewById<TextView>(R.id.pokemon_stat_speed_textview)
+        val pokemonImageView = view.findViewById<ImageView>(R.id.pokemon_details_imageview)
+        val pokemonNameTextView = view.findViewById<TextView>(R.id.pokemon_details_name_textview)
+        val pokemonNumberTextView = view.findViewById<TextView>(R.id.pokemon_details_number_textview)
+        val pokemonWeightTextView = view.findViewById<TextView>(R.id.pokemon_details_weight_label)
+        val pokemonHeightTextView = view.findViewById<TextView>(R.id.pokemon_details_height_label)
+        val pokemonHPTextView = view.findViewById<TextView>(R.id.pokemon_stat_hp_textview)
+        val pokemonAttackTextView = view.findViewById<TextView>(R.id.pokemon_stat_attack_textview)
+        val pokemonDefenseTextView = view.findViewById<TextView>(R.id.pokemon_stat_defense_textview)
+        val pokemonSpAttackTextView = view.findViewById<TextView>(R.id.pokemon_stat_spattack_textview)
+        val pokemonSpDefenseTextView = view.findViewById<TextView>(R.id.pokemon_stat_spdefense_textview)
+        val pokemonSpeedTextView = view.findViewById<TextView>(R.id.pokemon_stat_speed_textview)
 
         /* get needed variables */
         val pokemonId = String.format("%03d", (pokemon.pokemonId))
@@ -149,14 +165,14 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         pokemonSpeedTextView.text = pokemon.speed.toString()
 
         /* set type views */
-        setType(pokemon.type1, findViewById(R.id.pokemon_details_type1_textview))
-        setType(pokemon.type2, findViewById(R.id.pokemon_details_type2_textview))
+        setTypeView(pokemon.type1, view.findViewById(R.id.pokemon_details_type1_textview))
+        setTypeView(pokemon.type2, view.findViewById(R.id.pokemon_details_type2_textview))
     }
 
-    private fun addFavoriteViewFeatures() {
-        val deleteButton = findViewById<ImageButton>(R.id.pokemon_details_delete_pokemon_button)
-        val favoriteButton = findViewById<ImageButton>(R.id.pokemon_details_add_favorite_button)
-        val pokemonBackgroundImageView = findViewById<ImageView>(R.id.pokemon_details_background)
+    private fun addFavoriteViewFeatures(view: View) {
+        val deleteButton = view.findViewById<ImageButton>(R.id.pokemon_details_delete_pokemon_button)
+        val favoriteButton = view.findViewById<ImageButton>(R.id.pokemon_details_add_favorite_button)
+        val pokemonBackgroundImageView = view.findViewById<ImageView>(R.id.pokemon_details_background)
 
         deleteButton.visibility = VISIBLE
         favoriteButton.setImageResource(R.drawable.ic_save)
@@ -177,7 +193,7 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
     }
 
     @SuppressLint("DefaultLocale")
-    private fun setType(typeName: String?, view: TextView) {
+    private fun setTypeView(typeName: String?, view: TextView) {
         val drawable = AppCompatResources.getDrawable(this, R.drawable.type_background)
         val colorString: String
 
@@ -186,35 +202,14 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         else
             typeName
 
-        when (mTypeName) {
-            "normal" -> colorString = getString(R.string.pokemon_type_normal_hexstring)
-            "fire" -> colorString = getString(R.string.pokemon_type_fire_hexstring)
-            "water" -> colorString = getString(R.string.pokemon_type_water_hexstring)
-            "electric" -> colorString = getString(R.string.pokemon_type_electric_hexstring)
-            "grass" -> colorString = getString(R.string.pokemon_type_grass_hexstring)
-            "ice" -> colorString = getString(R.string.pokemon_type_ice_hexstring)
-            "fighting" -> colorString = getString(R.string.pokemon_type_fighting_hexstring)
-            "poison" -> colorString = getString(R.string.pokemon_type_poison_hexstring)
-            "ground" -> colorString = getString(R.string.pokemon_type_ground_hexstring)
-            "flying" -> colorString = getString(R.string.pokemon_type_flying_hexstring)
-            "psychic" -> colorString = getString(R.string.pokemon_type_psychic_hexstring)
-            "bug" -> colorString = getString(R.string.pokemon_type_bug_hexstring)
-            "rock" -> colorString = getString(R.string.pokemon_type_rock_hexstring)
-            "ghost" -> colorString = getString(R.string.pokemon_type_ghost_hexstring)
-            "dragon" -> colorString = getString(R.string.pokemon_type_dragon_hexstring)
-            "dark" -> colorString = getString(R.string.pokemon_type_dark_hexstring)
-            "steel" -> colorString = getString(R.string.pokemon_type_steel_hexstring)
-            "fairy" -> colorString = getString(R.string.pokemon_type_fairy_hexstring)
-            else -> {
-                colorString = getString(R.string.pokemon_type_unkown_colorstring)
-            }
-        }
+        colorString = mPokemonViewModel.getColorStringFromType(mTypeName, this)
 
         view.text = mTypeName.toUpperCase()
         drawable?.setTint(Color.parseColor(colorString))
         view.background = drawable
     }
 
+    /* gallery permission methods */
     @Suppress("DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -269,7 +264,6 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
                 )
             }
         }
-
         return isPermissionGranted(READ_EXTERNAL_STORAGE)
     }
 
@@ -282,7 +276,6 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         val builder = AlertDialog.Builder(this)
         builder.setTitle(title)
         builder.setMessage(message)
-
         builder.setPositiveButton(android.R.string.ok) { _, _ ->
             run {
                 ActivityCompat.requestPermissions(
@@ -293,7 +286,6 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
             }
         }
         builder.setNegativeButton(android.R.string.cancel) { dialog, _ -> dialog.cancel() }
-
         builder.show()
     }
 

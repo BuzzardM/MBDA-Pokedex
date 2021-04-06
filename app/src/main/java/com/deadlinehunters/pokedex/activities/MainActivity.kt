@@ -14,16 +14,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
+    private val SPLASH_TIME_OUT = 5000
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
-
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
-        val trainerName = PreferenceManager.getDefaultSharedPreferences(this).getString(
-            "trainername_preference",
-            resources.getString(R.string.username_preference_default_value)
-        )
+        initializePreferenceManager()
 
         if (!InternetConnectionHandler(this).isOnline())
             Toast.makeText(applicationContext, "No internet connection found. Please check your connection and try again.", Toast.LENGTH_SHORT)
@@ -33,6 +30,15 @@ class MainActivity : AppCompatActivity() {
             findNavController(
                 R.id.nav_host
             )
+        )
+
+        createWelcomeMessage()
+    }
+
+    private fun createWelcomeMessage() {
+        val trainerName = PreferenceManager.getDefaultSharedPreferences(this).getString(
+            "trainername_preference",
+            resources.getString(R.string.username_preference_default_value)
         )
 
         val snackBar = Snackbar.make(
@@ -45,5 +51,9 @@ class MainActivity : AppCompatActivity() {
         params.gravity = Gravity.TOP
         snackView.layoutParams = params
         snackBar.show()
+    }
+
+    private fun initializePreferenceManager() {
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
     }
 }
