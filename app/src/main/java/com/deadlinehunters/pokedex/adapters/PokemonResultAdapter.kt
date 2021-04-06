@@ -11,7 +11,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deadlinehunters.pokedex.R
-import com.deadlinehunters.pokedex.data.Pokemon
 import com.deadlinehunters.pokedex.data.PokemonResult
 
 class PokemonResultAdapter(

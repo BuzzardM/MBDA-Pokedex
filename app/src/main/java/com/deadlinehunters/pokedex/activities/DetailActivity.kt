@@ -187,26 +187,26 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
             typeName
 
         when (mTypeName) {
-            "normal" -> colorString = "#AAAA99"
-            "fire" -> colorString = "#FF4422"
-            "water" -> colorString = "#3399FF"
-            "electric" -> colorString = "#FFCC33"
-            "grass" -> colorString = "#77CC55"
-            "ice" -> colorString = "#66CCFF"
-            "fighting" -> colorString = "#BB5544"
-            "poison" -> colorString = "#AA5599"
-            "ground" -> colorString = "#DDBB55"
-            "flying" -> colorString = "#8899FF"
-            "psychic" -> colorString = "#FF5599"
-            "bug" -> colorString = "#AABB22"
-            "rock" -> colorString = "#BBAA66"
-            "ghost" -> colorString = "#6666BB"
-            "dragon" -> colorString = "#7766EE"
-            "dark" -> colorString = "#775544"
-            "steel" -> colorString = "#AAAABB"
-            "fairy" -> colorString = "#EE99EE"
+            "normal" -> colorString = getString(R.string.pokemon_type_normal_hexstring)
+            "fire" -> colorString = getString(R.string.pokemon_type_fire_hexstring)
+            "water" -> colorString = getString(R.string.pokemon_type_water_hexstring)
+            "electric" -> colorString = getString(R.string.pokemon_type_electric_hexstring)
+            "grass" -> colorString = getString(R.string.pokemon_type_grass_hexstring)
+            "ice" -> colorString = getString(R.string.pokemon_type_ice_hexstring)
+            "fighting" -> colorString = getString(R.string.pokemon_type_fighting_hexstring)
+            "poison" -> colorString = getString(R.string.pokemon_type_poison_hexstring)
+            "ground" -> colorString = getString(R.string.pokemon_type_ground_hexstring)
+            "flying" -> colorString = getString(R.string.pokemon_type_flying_hexstring)
+            "psychic" -> colorString = getString(R.string.pokemon_type_psychic_hexstring)
+            "bug" -> colorString = getString(R.string.pokemon_type_bug_hexstring)
+            "rock" -> colorString = getString(R.string.pokemon_type_rock_hexstring)
+            "ghost" -> colorString = getString(R.string.pokemon_type_ghost_hexstring)
+            "dragon" -> colorString = getString(R.string.pokemon_type_dragon_hexstring)
+            "dark" -> colorString = getString(R.string.pokemon_type_dark_hexstring)
+            "steel" -> colorString = getString(R.string.pokemon_type_steel_hexstring)
+            "fairy" -> colorString = getString(R.string.pokemon_type_fairy_hexstring)
             else -> {
-                colorString = "#000000"
+                colorString = getString(R.string.pokemon_type_unkown_colorstring)
             }
         }
 

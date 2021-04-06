@@ -36,4 +36,23 @@
     <string name="edit_enter_pokemon_name">Enter Pokemon name</string>
     <string name="enter_new_name_hint">Enter new name</string>
     <string name="delete_icon">delete icon</string>
+    <string name="pokemon_type_normal_hexstring">#AAAA99</string>
+    <string name="pokemon_type_fire_hexstring">#FF4422</string>
+    <string name="pokemon_type_water_hexstring">#3399FF</string>
+    <string name="pokemon_type_electric_hexstring">#FFCC33</string>
+    <string name="pokemon_type_grass_hexstring">#77CC55</string>
+    <string name="pokemon_type_ice_hexstring">#66CCFF</string>
+    <string name="pokemon_type_fighting_hexstring">#BB5544</string>
+    <string name="pokemon_type_poison_hexstring">#AA5599</string>
+    <string name="pokemon_type_ground_hexstring">#DDBB55</string>
+    <string name="pokemon_type_flying_hexstring">#8899FF</string>
+    <string name="pokemon_type_psychic_hexstring">#FF5599</string>
+    <string name="pokemon_type_bug_hexstring">#AABB22</string>
+    <string name="pokemon_type_rock_hexstring">#BBAA66</string>
+    <string name="pokemon_type_ghost_hexstring">#6666BB</string>
+    <string name="pokemon_type_dragon_hexstring">#7766EE</string>
+    <string name="pokemon_type_dark_hexstring">#775544</string>
+    <string name="pokemon_type_steel_hexstring">#AAAABB</string>
+    <string name="pokemon_type_fairy_hexstring">#EE99EE</string>
+    <string name="pokemon_type_unkown_colorstring">#000000</string>
 </resources>

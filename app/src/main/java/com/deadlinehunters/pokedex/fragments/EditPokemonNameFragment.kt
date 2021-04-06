@@ -1,17 +1,11 @@
 package com.deadlinehunters.pokedex.fragments
 
-import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDialogFragment
-import androidx.fragment.app.DialogFragment
 import com.deadlinehunters.pokedex.R
 
 class EditPokemonNameFragment : AppCompatDialogFragment(), TextView.OnEditorActionListener {
