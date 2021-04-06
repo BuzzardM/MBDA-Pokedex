@@ -182,7 +182,7 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
             mPokemonViewModel.updatePokemon(pokemon)
             Toast.makeText(
                 applicationContext,
-                "${pokemon.name} has been added to favorites!",
+                "${pokemon.name} has been updated!",
                 Toast.LENGTH_SHORT
             ).show()
         }
