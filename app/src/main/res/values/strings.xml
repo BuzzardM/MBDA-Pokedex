@@ -12,7 +12,7 @@
     <string name="font_preference_default_value">normal</string>
     <string name="username_preference_summary">Enter your trainer name used for greetings</string>
     <string name="username_preference_username">Trainer name</string>
-    <string name="username_preference_default_value">Trainer</string>
+    <string name="username_preference_default_value">Ash</string>
     <string name="pokedex_logo_content_description">Pokedex Logo</string>
     <string name="placeholder">Pokemon Details Placeholder</string>
     <string name="favorites_logo_description">Favorites</string>
@@ -55,4 +55,6 @@
     <string name="pokemon_type_steel_hexstring">#AAAABB</string>
     <string name="pokemon_type_fairy_hexstring">#EE99EE</string>
     <string name="pokemon_type_unkown_colorstring">#000000</string>
+    <string name="splash_screen_placeholder">Welcome,</string>
+    <string name="pokemon_trainer">Pokemon Trainer!</string>
 </resources>

@@ -50,7 +50,9 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         supportActionBar?.hide()
         mPokemonViewModel = ViewModelProvider(this).get(PokemonViewModel::class.java)
 
-        val view = (getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.activity_detail, null)
+        val view =
+            (getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.activity_detail,
+                null)
         prepareAndShowView(view)
     }
 
@@ -323,6 +325,11 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
     }
 
     override fun onFinishEditDialog(inputText: String?) {
+        if (inputText.isNullOrEmpty()){
+            Toast.makeText(applicationContext, "Name can not be empty.", Toast.LENGTH_SHORT)
+                .show()
+            return
+        }
         findViewById<TextView>(R.id.pokemon_details_name_textview).text = inputText.toString()
         pokemon.name = inputText.toString()
     }
