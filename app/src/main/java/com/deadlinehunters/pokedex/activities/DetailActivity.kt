@@ -13,6 +13,8 @@ import android.graphics.Color
 import android.graphics.ImageDecoder
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
@@ -43,12 +45,15 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
     private val galleryRequest = 1
     private lateinit var mPokemonViewModel: PokemonViewModel
     private lateinit var pokemon: Pokemon
+    private val errorDelay: Long = 5000
+    private val handler = Handler(Looper.getMainLooper())
 
     @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         mPokemonViewModel = ViewModelProvider(this).get(PokemonViewModel::class.java)
+        setContentView(R.layout.loading_screen)
 
         val view =
             (getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(R.layout.activity_detail,
@@ -66,7 +71,11 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         }
     }
 
-    private fun prepareAndShowWithAPICall(view: View, requestQueue: RequestQueue, pokemonData: PokemonResult?) {
+    private fun prepareAndShowWithAPICall(
+        view: View,
+        requestQueue: RequestQueue,
+        pokemonData: PokemonResult?
+    ) {
         if (pokemonData == null)
             return
 
@@ -113,8 +122,15 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
                 fillView(view, pokemon)
                 showView(view)
             },
-            { error ->
-                error.printStackTrace()
+            {
+                setContentView(R.layout.loading_screen)
+                handler.postDelayed({
+                    Toast.makeText(applicationContext,
+                        "Something went wrong while loading the pokemon.",
+                        Toast.LENGTH_SHORT)
+                        .show()
+                    super.onBackPressed()
+                }, errorDelay)
             }
         )
         requestQueue.add(request)
@@ -135,14 +151,17 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         /* Get all views */
         val pokemonImageView = view.findViewById<ImageView>(R.id.pokemon_details_imageview)
         val pokemonNameTextView = view.findViewById<TextView>(R.id.pokemon_details_name_textview)
-        val pokemonNumberTextView = view.findViewById<TextView>(R.id.pokemon_details_number_textview)
+        val pokemonNumberTextView =
+            view.findViewById<TextView>(R.id.pokemon_details_number_textview)
         val pokemonWeightTextView = view.findViewById<TextView>(R.id.pokemon_details_weight_label)
         val pokemonHeightTextView = view.findViewById<TextView>(R.id.pokemon_details_height_label)
         val pokemonHPTextView = view.findViewById<TextView>(R.id.pokemon_stat_hp_textview)
         val pokemonAttackTextView = view.findViewById<TextView>(R.id.pokemon_stat_attack_textview)
         val pokemonDefenseTextView = view.findViewById<TextView>(R.id.pokemon_stat_defense_textview)
-        val pokemonSpAttackTextView = view.findViewById<TextView>(R.id.pokemon_stat_spattack_textview)
-        val pokemonSpDefenseTextView = view.findViewById<TextView>(R.id.pokemon_stat_spdefense_textview)
+        val pokemonSpAttackTextView =
+            view.findViewById<TextView>(R.id.pokemon_stat_spattack_textview)
+        val pokemonSpDefenseTextView =
+            view.findViewById<TextView>(R.id.pokemon_stat_spdefense_textview)
         val pokemonSpeedTextView = view.findViewById<TextView>(R.id.pokemon_stat_speed_textview)
 
         /* get needed variables */
@@ -172,9 +191,12 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
     }
 
     private fun addFavoriteViewFeatures(view: View) {
-        val deleteButton = view.findViewById<ImageButton>(R.id.pokemon_details_delete_pokemon_button)
-        val favoriteButton = view.findViewById<ImageButton>(R.id.pokemon_details_add_favorite_button)
-        val pokemonBackgroundImageView = view.findViewById<ImageView>(R.id.pokemon_details_background)
+        val deleteButton =
+            view.findViewById<ImageButton>(R.id.pokemon_details_delete_pokemon_button)
+        val favoriteButton =
+            view.findViewById<ImageButton>(R.id.pokemon_details_add_favorite_button)
+        val pokemonBackgroundImageView =
+            view.findViewById<ImageView>(R.id.pokemon_details_background)
 
         deleteButton.visibility = VISIBLE
         favoriteButton.setImageResource(R.drawable.ic_save)
@@ -325,7 +347,7 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
     }
 
     override fun onFinishEditDialog(inputText: String?) {
-        if (inputText.isNullOrEmpty()){
+        if (inputText.isNullOrEmpty()) {
             Toast.makeText(applicationContext, "Name can not be empty.", Toast.LENGTH_SHORT)
                 .show()
             return
@@ -352,6 +374,11 @@ class DetailActivity : AppCompatActivity(), EditPokemonNameFragment.EditPokemonN
         mPokemonViewModel.deletePokemon(pokemon.id)
         Toast.makeText(applicationContext, "${pokemon.name} has been deleted!", Toast.LENGTH_SHORT)
             .show()
+        super.onBackPressed()
+    }
+
+    override fun onBackPressed() {
+        handler.removeCallbacksAndMessages(null)
         super.onBackPressed()
     }
 }

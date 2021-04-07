@@ -57,4 +57,5 @@
     <string name="pokemon_type_unkown_colorstring">#000000</string>
     <string name="splash_screen_placeholder">Welcome,</string>
     <string name="pokemon_trainer">Pokemon Trainer!</string>
+    <string name="loading">Loading…</string>
 </resources>
