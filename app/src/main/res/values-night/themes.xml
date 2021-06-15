@@ -6,7 +6,7 @@
         <item name="colorPrimaryVariant">@color/pokemon_red_background</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/pokemon_red_background</item>
+        <item name="colorSecondary">@color/ic_launcher_background</item>
         <item name="colorSecondaryVariant">@color/pokemon_red_background</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->

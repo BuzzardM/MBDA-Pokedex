@@ -17,6 +17,7 @@
         <EditTextPreference
             android:defaultValue="@string/username_preference_default_value"
             android:key="trainername_preference"
+            android:maxLength="20"
             android:summary="@string/username_preference_summary"
             android:title="@string/username_preference_username" />
     </PreferenceCategory>

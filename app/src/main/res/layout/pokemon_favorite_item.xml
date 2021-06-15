@@ -14,9 +14,9 @@
     android:layout_weight="0.2"
     app:strokeColor="@color/black">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:padding="10dp"
@@ -26,20 +26,22 @@
             android:id="@+id/pokemon_favorite_item_imageview"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
             android:contentDescription="@string/pokemon_sprite"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/sprite_001"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/pokemon_favorite_item_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pokemon_name_placeholder"
-            android:textColor="@android:color/black"
-            android:textSize="14sp" />
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="@+id/pokemon_favorite_item_imageview"
+            app:layout_constraintStart_toStartOf="@+id/pokemon_favorite_item_imageview"
+            app:layout_constraintTop_toBottomOf="@+id/pokemon_favorite_item_imageview" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
